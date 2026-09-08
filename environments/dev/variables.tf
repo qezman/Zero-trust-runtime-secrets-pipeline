@@ -15,3 +15,20 @@ variable "environment" {
   default     = "dev"
   type        = string
 }
+
+variable "vpc_name" {
+  description = "Name tag for the VPC"
+  default     = "ztsp-vpc"
+  type        = string
+}
+
+variable "availability_zones" {
+  description = "List of AZs to deploy subnets into"
+  type        = list(string)
+}
+
+variable "vpc_cidr" {
+  description = "CIDR block for the VPC"
+  type        = string
+  default     = "10.0.0.0/16"
+}
