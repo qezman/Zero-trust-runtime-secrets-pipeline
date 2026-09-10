@@ -26,3 +26,11 @@ module "database" {
   db_subnet_group_name   = module.networking.db_subnet_group
   vpc_security_group_ids = [module.networking.rds_security_group_id]
 }
+
+module "iam" {
+  source = "../../modules/iam"
+
+  project     = var.project
+  environment = var.environment
+  secret_arn  = module.database.master_user_secret_arn
+}

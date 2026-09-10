@@ -1,0 +1,7 @@
+project              = "ztsp-deployer"
+environment          = "dev"
+availability_zones   = ["us-east-1a", "us-east-1b"]
+vpc_cidr             = "your vpc cidr"
+db_name              = "enter your db_name"
+username             = "enter your db_username"
+private_subnet_cidrs = "enter your private subnet"
