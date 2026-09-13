@@ -1,0 +1,176 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "IAMScopedToProjectRoles",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:CreateInstanceProfile",
+        "iam:DeleteInstanceProfile",
+        "iam:AddRoleToInstanceProfile",
+        "iam:RemoveRoleFromInstanceProfile",
+        "iam:GetInstanceProfile",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:TagInstanceProfile",
+        "iam:UntagInstanceProfile",
+        "iam:ListInstanceProfileTags",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies"
+      ],
+      "Resource": [
+        "arn:aws:iam::722965867897:role/ztsp-*",
+        "arn:aws:iam::722965867897:instance-profile/ztsp-*"
+      ]
+    },
+    {
+      "Sid": "PassRoleScopedOnly",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::722965867897:role/ztsp-*",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+        }
+      }
+    },
+    {
+      "Sid": "AllowServiceLinkedRoleForEC2ICE",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "arn:aws:iam::722965867897:role/aws-service-role/ec2-instance-connect.amazonaws.com/*",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": "ec2-instance-connect.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "EC2Manage",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:TerminateInstances",
+        "ec2:RebootInstances",
+        "ec2:StopInstances",
+        "ec2:StartInstances",
+        "ec2:DescribeInstances",
+        "ec2:DescribeInstanceAttribute",
+        "ec2:DescribeInstanceCreditSpecifications",
+        "ec2:DescribeVolumes",
+        "ec2:GetConsoleOutput",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstanceTypes",
+        "ec2:CreateTags",
+        "ec2:DescribeTags",
+        "ec2:CreateSecurityGroup",
+        "ec2:DeleteSecurityGroup",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:CreateKeyPair",
+        "ec2:DeleteKeyPair",
+        "ec2:DescribeKeyPairs",
+        "ec2:AssociateIamInstanceProfile",
+        "ec2:DisassociateIamInstanceProfile",
+        "ec2:DescribeIamInstanceProfileAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkingManage",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpc",
+        "ec2:DeleteVpc",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyVpcAttribute",
+        "ec2:DescribeVpcAttribute",
+        "ec2:CreateSubnet",
+        "ec2:DeleteSubnet",
+        "ec2:DescribeSubnets",
+        "ec2:ModifySubnetAttribute",
+        "ec2:CreateRouteTable",
+        "ec2:DeleteRouteTable",
+        "ec2:DescribeRouteTables",
+        "ec2:CreateRoute",
+        "ec2:DeleteRoute",
+        "ec2:AssociateRouteTable",
+        "ec2:DisassociateRouteTable",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:ModifyVpcEndpoint",
+        "ec2:DescribeVpcEndpointServices",
+        "ec2:DescribePrefixLists",
+        "ec2:DescribeSecurityGroupRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInterfacesForEICE",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeNetworkInterfaceAttribute",
+        "ec2:ModifyNetworkInterfaceAttribute",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DescribeNetworkInterfacePermissions",
+        "ec2:CreateInstanceConnectEndpoint",
+        "ec2:DeleteInstanceConnectEndpoint",
+        "ec2:DescribeInstanceConnectEndpoints",
+        "ec2-instance-connect:OpenTunnel",
+        "ec2-instance-connect:SendSSHPublicKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMSessionManagerStart",
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+      "Resource": [
+        "arn:aws:ec2:us-east-1:722965867897:instance/*",
+        "arn:aws:ssm:us-east-1:722965867897:document/SSM-SessionManagerRunShell",
+        "arn:aws:ssm:us-east-1::document/SSM-SessionManagerRunShell"
+      ]
+    },
+    {
+      "Sid": "SSMSessionManagerGeneral",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:TerminateSession",
+        "ssm:ResumeSession",
+        "ssm:DescribeSessions",
+        "ssm:GetConnectionStatus",
+        "ssm:DescribeInstanceInformation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SerialConsole",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:EnableSerialConsoleAccess",
+        "ec2:GetSerialConsoleAccessStatus",
+        "ec2-instance-connect:SendSerialConsoleSSHPublicKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

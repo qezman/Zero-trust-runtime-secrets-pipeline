@@ -34,3 +34,15 @@ module "iam" {
   environment = var.environment
   secret_arn  = module.database.master_user_secret_arn
 }
+
+module "compute" {
+  source = "../../modules/compute"
+
+  project               = var.project
+  environment           = var.environment
+  region                = var.region
+  private_subnet_id     = module.networking.private_subnet_ids[0]
+  ec2_security_group_id = module.networking.ec2_security_group_id
+  instance_profile_name = module.iam.instance_profile_name
+  secret_arn            = module.database.master_user_secret_arn
+}
